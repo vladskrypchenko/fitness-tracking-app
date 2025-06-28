@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  fittracker-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - fittracker-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fittracker.rule=Host(`fittracker.app`)"
+      - "traefik.http.routers.fittracker.entrypoints=websecure"
+      - "traefik.http.routers.fittracker.tls.certresolver=letsencrypt"
+      - "traefik.http.services.fittracker.loadbalancer.server.port=80"
+
+  # Optional: Add reverse proxy with SSL
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=admin@fittracker.app"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+    restart: unless-stopped
+    networks:
+      - fittracker-network
+    profiles:
+      - "with-proxy"
+
+networks:
+  fittracker-network:
+    driver: bridge
+
+volumes:
+  letsencrypt: 
