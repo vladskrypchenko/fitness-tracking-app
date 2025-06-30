@@ -4,7 +4,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package*.json package-lock.json ./
+COPY package*.json ./
 
 # Install all dependencies (including dev dependencies needed for build)
 RUN npm ci
