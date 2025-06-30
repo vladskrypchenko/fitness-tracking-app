@@ -47,8 +47,8 @@ sleep 10
 # Check if services are running
 if docker-compose ps | grep -q "Up"; then
     echo "✅ Deployment successful!"
-    echo "🌐 Application is running at: http://localhost:8080"
-    echo "📊 Health check: http://localhost:8080/health"
+    echo "🌐 Application is running at: http://localhost:3000"
+    echo "📊 Health check: http://localhost:3000/health"
     echo ""
     echo "📋 Useful commands:"
     echo "   docker-compose logs -f         # View logs"
