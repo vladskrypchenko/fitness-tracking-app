@@ -3,9 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "${HTTP_PORT:-3000}:80"
-      - "${HTTPS_PORT:-3443}:443"
     environment:
       - VITE_CONVEX_URL=${VITE_CONVEX_URL}
       - CONVEX_SITE_URL=${CONVEX_SITE_URL}
