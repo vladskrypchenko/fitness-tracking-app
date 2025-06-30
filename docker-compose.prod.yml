@@ -9,8 +9,7 @@ services:
     environment:
       - VITE_CONVEX_URL=${VITE_CONVEX_URL}
       - CONVEX_SITE_URL=${CONVEX_SITE_URL}
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    # nginx.conf is built into the Docker image, no external volume needed
     restart: unless-stopped
     networks:
       - fitness-network

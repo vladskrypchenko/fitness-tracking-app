@@ -1,28 +1,138 @@
 # Fitness Tracking App
-  
-This is a project built with [Chef](https://chef.convex.dev) using [Convex](https://convex.dev) as its backend.
-  
-This project is connected to the Convex deployment named [`animated-seal-990`](https://dashboard.convex.dev/d/animated-seal-990).
-  
-## Project structure
-  
-The frontend code is in the `app` directory and is built with [Vite](https://vitejs.dev/).
-  
-The backend code is in the `convex` directory.
-  
-`npm run dev` will start the frontend and backend servers.
 
-## App authentication
+A modern fitness tracking application built with React and Convex.
 
-Chef apps use [Convex Auth](https://auth.convex.dev/) with Anonymous auth for easy sign in. You may wish to change this before deploying your app.
+## Features
 
-## Developing and deploying your app
+- Track workouts and fitness activities
+- View statistics and progress
+- User authentication
+- Real-time data synchronization
 
-Check out the [Convex docs](https://docs.convex.dev/) for more information on how to develop with Convex.
-* If you're new to Convex, the [Overview](https://docs.convex.dev/understanding/) is a good place to start
-* Check out the [Hosting and Deployment](https://docs.convex.dev/production/) docs for how to deploy your app
-* Read the [Best Practices](https://docs.convex.dev/understanding/best-practices/) guide for tips on how to improve you app further
+## Tech Stack
 
-## HTTP API
+- **Frontend:** React 19, TypeScript, Tailwind CSS, Vite
+- **Backend:** Convex (Backend-as-a-Service)
+- **Deployment:** Docker, Docker Compose
+- **Web Server:** Nginx
 
-User-defined http routes are defined in the `convex/router.ts` file. We split these routes into a separate file from `convex/http.ts` to allow us to prevent the LLM from modifying the authentication routes.
+## Development
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Convex account
+
+### Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd fitness-tracking-app
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Set up Convex:**
+   ```bash
+   npm run setup
+   ```
+
+4. **Start development server:**
+   ```bash
+   npm run dev
+   ```
+
+## Docker Deployment
+
+### Quick Start
+
+1. **Configure environment variables:**
+   ```bash
+   cp env.example .env
+   # Edit .env with your Convex settings
+   ```
+
+2. **Deploy with Docker Compose:**
+   ```bash
+   # Using the deployment script
+   chmod +x docker-deploy.sh
+   ./docker-deploy.sh
+   
+   # Or manually
+   docker-compose up -d
+   ```
+
+3. **Access the application:**
+   - Main app: http://localhost:3000
+   - Health check: http://localhost:3000/health
+
+### Configuration
+
+The application uses environment variables for configuration:
+
+```env
+# Required
+VITE_CONVEX_URL=https://your-deployment-name.convex.cloud
+CONVEX_SITE_URL=http://localhost:3000
+
+# Optional
+HTTP_PORT=3000
+HTTPS_PORT=3443
+NODE_ENV=production
+```
+
+### Docker Commands
+
+```bash
+# Build and start
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+
+# Rebuild images
+docker-compose build --no-cache
+```
+
+## Production Deployment
+
+For production environments, use the production Docker Compose configuration:
+
+```bash
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+Features:
+- Optimized nginx configuration
+- Health checks
+- Security headers
+- Gzip compression
+- Static file caching
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run linter
+- `npm run docker:build` - Build Docker image
+- `npm run docker:run` - Run Docker container
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## License
+
+[Your License]
