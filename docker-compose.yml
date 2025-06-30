@@ -1,52 +1,42 @@
-version: '3.8'
-
 services:
-  fittracker-frontend:
+  frontend:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "80:80"
-    environment:
-      - NODE_ENV=production
-    restart: unless-stopped
-    networks:
-      - fittracker-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.fittracker.rule=Host(`fittracker.app`)"
-      - "traefik.http.routers.fittracker.entrypoints=websecure"
-      - "traefik.http.routers.fittracker.tls.certresolver=letsencrypt"
-      - "traefik.http.services.fittracker.loadbalancer.server.port=80"
-
-  # Optional: Add reverse proxy with SSL
-  traefik:
-    image: traefik:v2.10
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.email=admin@fittracker.app"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
-    ports:
-      - "80:80"
       - "443:443"
-      - "8080:8080"
+    environment:
+      - VITE_CONVEX_URL=${VITE_CONVEX_URL}
+      - CONVEX_SITE_URL=${CONVEX_SITE_URL}
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./letsencrypt:/letsencrypt"
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     restart: unless-stopped
     networks:
-      - fittracker-network
-    profiles:
-      - "with-proxy"
+      - fitness-network
+
+  # Optional: Add a reverse proxy for HTTPS
+  # You can uncomment this if you need SSL termination
+  # nginx-proxy:
+  #   image: nginxproxy/nginx-proxy:latest
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #     - certs:/etc/nginx/certs
+  #     - vhost:/etc/nginx/vhost.d
+  #     - html:/usr/share/nginx/html
+  #   restart: unless-stopped
+  #   networks:
+  #     - fitness-network
 
 networks:
-  fittracker-network:
+  fitness-network:
     driver: bridge
 
-volumes:
-  letsencrypt: 
+# Optional volumes for SSL certificates
+# volumes:
+#   certs:
+#   vhost:
+#   html: 
