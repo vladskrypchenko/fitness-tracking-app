@@ -4,8 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
+      - "8443:443"
     environment:
       - VITE_CONVEX_URL=${VITE_CONVEX_URL}
       - CONVEX_SITE_URL=${CONVEX_SITE_URL}
