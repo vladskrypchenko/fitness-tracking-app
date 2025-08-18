@@ -13,6 +13,10 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Set build-time environment variables
+ARG NEXT_PUBLIC_CONVEX_URL
+ENV NEXT_PUBLIC_CONVEX_URL=$NEXT_PUBLIC_CONVEX_URL
+
 # Build the application
 RUN npm run build
 
@@ -20,10 +24,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy built app from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/out /usr/share/nginx/html
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]

@@ -3,14 +3,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_CONVEX_URL=${VITE_CONVEX_URL}
     environment:
-      - VITE_CONVEX_URL=${VITE_CONVEX_URL}
+      - NEXT_PUBLIC_CONVEX_URL=${VITE_CONVEX_URL}
       - CONVEX_SITE_URL=${CONVEX_SITE_URL}
     restart: unless-stopped
     networks:
       - fitness-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      test: ["CMD", "curl", "-f", "http://localhost"]
       interval: 30s
       timeout: 10s
       retries: 3
