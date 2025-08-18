@@ -14,9 +14,10 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as auth from "../auth.js";
-import type * as fitness from "../fitness.js";
-import type * as http from "../http.js";
-import type * as router from "../router.js";
+import type * as userProfiles from "../userProfiles.js";
+import type * as users from "../users.js";
+import type * as workoutTypes from "../workoutTypes.js";
+import type * as workouts from "../workouts.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -28,9 +29,10 @@ import type * as router from "../router.js";
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
-  fitness: typeof fitness;
-  http: typeof http;
-  router: typeof router;
+  userProfiles: typeof userProfiles;
+  users: typeof users;
+  workoutTypes: typeof workoutTypes;
+  workouts: typeof workouts;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
